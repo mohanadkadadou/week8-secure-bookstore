@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Bookstore Reviews</title>
+</head>
+<body>
+  <h1>Reviews</h1>
+  <div id="reviews"></div>
+  <script>
+    // VULN: renders server-provided review text with innerHTML (stored XSS).
+    async function load(bookId) {
+      const res = await fetch('/reviews/' + bookId);
+      const reviews = await res.json();
+      const box = document.getElementById('reviews');
+      box.innerHTML = reviews.map(t => '<p>' + t + '</p>').join('');
+    }
+    load(1);
+  </script>
+</body>
+</html>
