@@ -1,0 +1,47 @@
+                   
+                   
+┌─────────────────┐
+│ 6 Code Findings │
+└─────────────────┘
+           
+    main.py
+   ❯❯❱ semgrep-local.local-hardcoded-secret-assignment
+          ❰❰ Blocking ❱❱
+          Hardcoded secret/API key in source. Load it from the environment instead.
+                                                                                   
+           33┆ API_KEY = "sk-live-8f3c1d9e2b7a4f60bookstore-demo-key"
+            ⋮┆----------------------------------------
+           34┆ SECRET_TOKEN = "supersecret-admin-token"
+   
+    ❯❱ python.fastapi.security.wildcard-cors.wildcard-cors
+          ❰❰ Blocking ❱❱
+          CORS policy allows any origin (using wildcard '*'). This is insecure and should be avoided.
+          Details: https://sg.run/KxApY                                                              
+                                                                                                     
+           41┆ allow_origins=["*"],
+   
+    ❯❱ python.lang.security.audit.formatted-sql-query.formatted-sql-query
+          ❰❰ Blocking ❱❱
+          Detected possible formatted SQL query. Use parameterized queries instead.
+          Details: https://sg.run/EkWw                                             
+                                                                                   
+          102┆ rows = conn.execute(query).fetchall()
+   
+   ❯❯❱ python.sqlalchemy.security.sqlalchemy-execute-raw-query.sqlalchemy-execute-raw-query
+          ❰❰ Blocking ❱❱
+          Avoiding SQL string concatenation: untrusted input concatenated with raw SQL query can result in SQL
+          Injection. In order to execute raw query safely, prepared statement should be used. SQLAlchemy      
+          provides TextualSQL to easily used prepared statement with named parameters. For complex SQL        
+          composition, use SQL Expression Language or Schema Definition Language. In most cases, SQLAlchemy   
+          ORM will be a better option.                                                                        
+          Details: https://sg.run/2b1L                                                                        
+                                                                                                              
+          102┆ rows = conn.execute(query).fetchall()
+                     
+    static/index.html
+   ❯❯❱ semgrep-local.local-innerhtml-sink-in-html
+          ❰❰ Blocking ❱❱
+          innerHTML assignment with data from the server (stored XSS). Use textContent or build DOM nodes.
+                                                                                                          
+           16┆ box.innerHTML = reviews.map(t => '<p>' + t + '</p>').join('');
+

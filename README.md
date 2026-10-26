@@ -1,29 +1,12 @@
-# Starter — Vulnerable Bookstore
+# Week 8: Vulnerable Bookstore, scanned and fixed
 
-⚠️ **This app contains INTENTIONAL vulnerabilities** for the scan-and-fix exercise.
-Do **not** deploy it or reuse this code in real projects. The planted issues are listed
-in the header of `main.py` — that's your answer key.
+Starter: intentionally vulnerable FastAPI bookstore (see the planted-issue list in `main.py`). This repo contains the fixes, scans and evidence; the story is in [`writeup.md`](writeup.md).
 
-## Setup
 ```bash
-pip install -r requirements.txt
-pytest                      # 3 tests should pass
-uvicorn main:app --reload   # http://localhost:8000  (docs at /docs)
+python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
+pytest                                               # 9 tests
+semgrep scan --metrics=off --config p/default --config semgrep-local/rules.yml .   # 0 findings
+pip-audit -r requirements.txt                        # no known vulnerabilities
+python docs/injection_demo.py                        # needs Ollama + llama3.1:8b
 ```
-
-## Scan
-```bash
-semgrep scan --config auto
-```
-Scan the backend code, `static/index.html`, `requirements.txt`, and config for secrets.
-
-## Endpoints
-- `GET /books?q=...`, `GET /books/{id}`
-- `POST /reviews` `{ "book_id": 1, "text": ... }`, `GET /reviews/{id}`
-- `POST /summarize-review` `{ "text": ... }` — needs Ollama running (`llama3.1:8b`) for
-  the prompt-injection exercise
-
-## Files
-- `main.py` — the vulnerable app (planted-issue list in the header)
-- `static/index.html` — frontend with an XSS sink
-- `test_main.py` — pytest suite (non-LLM paths)
+Configuration (environment, never committed): see `.env.example`.

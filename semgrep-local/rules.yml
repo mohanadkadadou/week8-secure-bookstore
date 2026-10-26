@@ -1,0 +1,15 @@
+# Local rules for issues the registry rulesets missed on this starter (see writeup.md, "Scanner coverage").
+rules:
+  - id: local-hardcoded-secret-assignment
+    languages: [python]
+    severity: ERROR
+    message: Hardcoded secret/API key in source. Load it from the environment instead.
+    patterns:
+      - pattern-regex: '(?i)^\s*(API_KEY|SECRET[_A-Z]*|[A-Z_]*TOKEN)\s*=\s*"[^"]{8,}"'
+  - id: local-innerhtml-sink-in-html
+    languages: [generic]
+    paths:
+      include: ["*.html"]
+    severity: ERROR
+    message: innerHTML assignment with data from the server (stored XSS). Use textContent or build DOM nodes.
+    pattern-regex: '\.innerHTML\s*='
